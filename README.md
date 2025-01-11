@@ -1,14 +1,14 @@
 # hackathon
 
-* VS code version:
+# VS code version:
 - Version: 1.96.2 (Universal)
 
-* JDK version used:
+# JDK version used:
 - openjdk version "23.0.1" 2024-10-15
 - OpenJDK Runtime Environment Homebrew (build 23.0.1)
 - OpenJDK 64-Bit Server VM Homebrew (build 23.0.1, mixed mode, sharing)
 
-* Spring Initialzr Modules included:
+# Spring Initialzr Modules included:
 - Spring Web
 - Spring Boot Dev Tools
 - Spring data JPA
@@ -17,7 +17,7 @@
 - Spring Data elastic search (Access+Driver)
 - Lombok
 
-* VS Code plugins:
+# VS Code plugins:
 - Spring Boot Developer Extension Pack - by Developer Soapbox
 - Spring Boot Snippets for VS Code - by Developer Soapbox
 - VS Code Spring Boot Application Development Extension Pack - by VMWare
@@ -29,10 +29,10 @@
 - Markdown Preview Enhanced - by Yiyi Wang
 
 
-- Including the spring tool suite maven dependency and VS code plugin so that it would enable liver reload server so that for any change, changes server reload the application automatically.
+# Including the spring tool suite maven dependency and VS code plugin so that it would enable liver reload server so that for any change, changes server reload the application automatically.
 
 
-* Plan and how we divide the work:
+# Plan and how we divide the work:
 1. Introduction to our problem statement - Ajmal 1 minute
 2. Explain how maven, spring and spring boot could be used for back-end, Overview of spring eco-system, modules, Initializr - 5 minutes
 3. Flash the versions of dependencies and VS code plugin used - 1 minute
