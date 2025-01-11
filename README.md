@@ -41,7 +41,7 @@
 6. REST API and principles will be created for CRUD operation will follow the above Enum status - Ajmal - 5 minutes
 	1. Show how to use Postman - Ajmal
 	2. Explain REST principles - Ajmal
-7. Write unit and integration test and explain test pyramid - Jacks - 3 minutes 
+7. Write unit and integration test and explain test pyramid - Ajmal and or Jacks - 3 minutes 
 	1. We only show case running few test cases, won't show case writing tests
 8. Persistence layer - Store the above Postgres and explain - Jacks - 5  minutes
 9. Persistence layer - Store the above in Elastic search - Jack - 3 minutes 
