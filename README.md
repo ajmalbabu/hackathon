@@ -29,7 +29,7 @@
 - Markdown Preview Enhanced - by Yiyi Wang
 
 
-# Including the spring tool suite maven dependency and VS code plugin so that it would enable liver reload server so that for any change, changes server reload the application automatically.
+- Including the spring tool suite maven dependency and VS code plugin so that it would enable liver reload server so that for any change, changes server reload the application automatically.
 
 
 # Plan and how we divide the work:
