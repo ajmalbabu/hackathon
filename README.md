@@ -47,3 +47,7 @@
 9. Persistence layer - Store the above in Elastic search - Jack - 3 minutes 
 	1. Jacks to explain why different data stores types
 10. GtiHub co-pilot plugin overview - Jack - 1 minute
+
+# Varies REST end points for postman usage
+1. http://localhost:8080/api/todos
+2. http://localhost:8080/api/todos/1
