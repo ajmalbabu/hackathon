@@ -32,8 +32,6 @@ class TodoApiTest {
     @MockitoBean
     private TodoRepository todoRepository;
 
-    // @Autowired
-    // private TodoApi todoApi;
 
     @BeforeEach
     void setUp() {
