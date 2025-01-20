@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -49,14 +50,16 @@ class TodoApiTest {
         when(todoRepository.findById(Integer.valueOf(1))).thenReturn(Optional.of(existingTodoEntity));
         when(todoRepository.save(any(TodoEntity.class))).thenReturn(updatedTodoEntity);
 
-        // When, Then
-        mockMvc.perform(put("/api/todos/1")
+        // When
+        ResultActions result =mockMvc.perform(put("/api/todos/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\": \"Updated Todo\", \"description\": \"Updated description\", \"dateCreated\": \"2023-10-01\", \"status\": \"UPDATED\"}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Updated Todo"))
-                .andExpect(jsonPath("$.description").value("Updated description"))
-                .andExpect(jsonPath("$.status").value("UPDATED"));
+                .content("{\"name\": \"Updated Todo\", \"description\": \"Updated description\", \"dateCreated\": \"2023-10-01\", \"status\": \"UPDATED\"}"));
+
+        // Then
+        result.andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(1))
+            .andExpect(jsonPath("$.name").value("Updated Todo"))
+            .andExpect(jsonPath("$.description").value("Updated description"))
+            .andExpect(jsonPath("$.status").value("UPDATED"));
     }    
 }
