@@ -16,7 +16,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class TodoEntity {
 
-    public TodoEntity(String name, String description,LocalDate dateCreated, Status status) {
+    public TodoEntity(Integer id, String name, String description,LocalDate dateCreated, Status status) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.dateCreated = dateCreated;

@@ -26,18 +26,20 @@ public class TodoService {
     }
 
     public Todo createTodo(Todo todo) {
-        return todoRepository.save(new TodoEntity(todo.name(),todo.description(),todo.dateCreated(),todo.status())).map(TodoEntity::toRecord).get();
+        return todoRepository.save(new TodoEntity(todo.id(), todo.name(),todo.description(),todo.dateCreated(),todo.status())).map(TodoEntity::toRecord).get();
     }
 
     public Optional<Todo> updateTodo(Integer id,Todo todo) {
         return todoRepository.findById(id)
             .map(existingEntity -> {
-            existingEntity.setName(todo.name());
-            existingEntity.setDescription(todo.description());
-            TodoEntity updatedEntity =  todoRepository.save(existingEntity).get();
-            return updatedEntity.toRecord();
+                existingEntity.setName(todo.name());
+                existingEntity.setDescription(todo.description());
+                existingEntity.setStatus(todo.status());
+                TodoEntity updatedEntity =  todoRepository.save(existingEntity).get();
+                return updatedEntity.toRecord();
             });   
     }
+    
 
     public boolean deleteTodo(Integer id) {
 
