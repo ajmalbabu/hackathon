@@ -55,7 +55,7 @@ class TodoServiceTest {
     }
 
     @Test
-    void updateTodo_NotExistingTodo_ReturnsOptionalEmpty() {
+    void updateTodoOnNotExistingTodoReturnsOptionalEmpty() {
 
         // Given
         Integer todoId = 1;

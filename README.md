@@ -32,7 +32,7 @@
 - Including the spring tool suite maven dependency and VS code plugin so that it would enable liver reload server so that for any change, changes server reload the application automatically.
 
 
-# Plan and how we divide the work:
+# Plan and how we divide the work - falsh book along the way:
 1. Introduction to our problem statement - Ajmal 1 minute
 2. Explain how maven, spring and spring boot could be used for back-end, Overview of spring eco-system, modules, Initializr - 5 minutes
 3. Flash the versions of dependencies and VS code plugin used - 1 minute
@@ -41,13 +41,31 @@
 6. REST API and principles will be created for CRUD operation will follow the above Enum status - Ajmal - 5 minutes
 	1. Show how to use Postman - Ajmal
 	2. Explain REST principles - Ajmal
-7. Write unit and integration test and explain test pyramid - Ajmal and or Jacks - 3 minutes 
+7. Explain test pyramid and explain one unit test - Ajmal 2 minutes
+8. Explaing integration  Jacks - 2 minutes 
 	1. We only show case running few test cases, won't show case writing tests
-8. Persistence layer - Store the above Postgres and explain - Jacks - 5  minutes
-9. Persistence layer - Store the above in Elastic search - Jack - 3 minutes 
+9.  Persistence layer - Store the above Postgres and explain - Jacks - 5  minutes
+10. Persistence layer - Store the above in Elastic search - Jack - 3 minutes 
 	1. Jacks to explain why different data stores types
-10. GtiHub co-pilot plugin overview - Jack - 1 minute
+11. GtiHub co-pilot plugin overview - Jack - 1 minute
 
-# Varies REST end points for postman usage
-1. http://localhost:8080/api/todos
-2. http://localhost:8080/api/todos/1
+# Various REST end points for postman usage
+1. Get all Todos: http://localhost:8080/api/todos
+2. Create a Todo: http://localhost:8080/api/todos
+{
+    "id": 1,
+    "name": "Sample Todo",
+    "description": "This is a sample todo item",
+    "dateCreated": "2023-10-01",
+    "status": "CREATED"
+}
+3. Get One Todo: http://localhost:8080/api/todos/1
+4. Update a Todo: http://localhost:8080/api/todos/1
+{
+    "id": 1,
+    "name": "Sample Todo100",
+    "description": "This is a sample todo item",
+    "dateCreated": "2023-10-01",
+    "status": "CREATED"
+}
+5. Delete a TODO: http://localhost:8080/api/todos/1

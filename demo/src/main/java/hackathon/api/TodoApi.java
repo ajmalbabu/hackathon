@@ -14,7 +14,6 @@ import java.util.Optional;
 @RequestMapping("/api/todos")
 public class TodoApi {
 
-
     @Autowired
     private TodoService todoService;
 
@@ -22,12 +21,12 @@ public class TodoApi {
     public List<Todo> getAllTodos() {
         System.out.println("Getting all todos");
         return todoService.getAllTodos();
-        
+
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Todo> getTodoById(@PathVariable Integer id) {
-        System.out.println("Getting todo by id: "+id);
+        System.out.println("Getting todo by id: " + id);
         Optional<Todo> todo = todoService.findTodoById(id);
         return todo.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -43,7 +42,7 @@ public class TodoApi {
         Optional<Todo> updatedTodo = todoService.updateTodo(id, todo);
 
         return updatedTodo.map(todo1 -> ResponseEntity.ok(todo1))
-                .orElseGet(()->ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
 
     }
 
@@ -51,9 +50,9 @@ public class TodoApi {
     public ResponseEntity<Void> deleteTodo(@PathVariable Integer id) {
 
         boolean response = todoService.deleteTodo(id);
-        if(response) {
+        if (response) {
             return ResponseEntity.ok().build();
-        }else {
+        } else {
             return ResponseEntity.noContent().build();
         }
     }
