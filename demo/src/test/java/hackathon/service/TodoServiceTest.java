@@ -3,11 +3,11 @@ package hackathon.service;
 import hackathon.entity.TodoEntity;
 import hackathon.model.Todo;
 import hackathon.repository.TodoRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class TodoServiceTest {
 
     @Mock
@@ -25,19 +26,13 @@ class TodoServiceTest {
     @InjectMocks
     private TodoService todoService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void updateExistingTodoReturnsUpdatedTodo() {
         // Given
         Integer todoId = 1;
-        Todo existingTodo = new Todo(todoId, "Existing Todo", "Old description", LocalDate.now(), Todo.Status.CREATED);
-        Todo updatedTodo = new Todo(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
         TodoEntity existingTodoEntity = new TodoEntity(todoId, "Existing Todo", "Old description", LocalDate.now(), Todo.Status.CREATED);
         TodoEntity updatedTodoEntity = new TodoEntity(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
+        Todo updatedTodo = new Todo(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
 
         when(todoRepository.findById(todoId)).thenReturn(Optional.of(existingTodoEntity));
         when(todoRepository.save(any(TodoEntity.class))).thenReturn(updatedTodoEntity);
