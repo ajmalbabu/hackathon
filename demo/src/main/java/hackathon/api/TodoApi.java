@@ -41,7 +41,7 @@ public class TodoApi {
 
         Optional<Todo> updatedTodo = todoService.updateTodo(id, todo);
 
-        return updatedTodo.map(todo1 -> ResponseEntity.ok(todo1))
+        return updatedTodo.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
     }
