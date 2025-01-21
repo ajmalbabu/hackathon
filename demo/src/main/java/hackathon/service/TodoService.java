@@ -1,5 +1,6 @@
 package hackathon.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,8 @@ public class TodoService {
 
     public Todo createTodo(Todo todo) {
         return todoRepository
-                .save(new TodoEntity(todo.id(), todo.name(), todo.description(), todo.dateCreated(), todo.status()))
-                .map(TodoEntity::toRecord).get();
+                .save(new TodoEntity(null, todo.name(), todo.description(), LocalDate.now(), Todo.Status.CREATED))
+                .toRecord();
     }
 
     public Optional<Todo> updateTodo(Integer id, Todo todo) {
@@ -36,7 +37,7 @@ public class TodoService {
                     existingEntity.setName(todo.name());
                     existingEntity.setDescription(todo.description());
                     existingEntity.setStatus(todo.status());
-                    TodoEntity updatedEntity = todoRepository.save(existingEntity).get();
+                    TodoEntity updatedEntity = todoRepository.save(existingEntity);
                     return updatedEntity.toRecord();
                 });
     }

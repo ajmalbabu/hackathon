@@ -1,0 +1,25 @@
+### Add a new todo
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+    "name": "Todo 2",
+    "description": "Description of the todo 2",
+    "completed": false
+}
+### Get all todos
+GET http://localhost:8080/api/todos
+
+### Update todo
+PUT http://localhost:8080/api/todos/1
+Content-Type: application/json
+
+{
+  "name": "Todo 1a",
+  "description": "New description of the todo 1",
+  "completed": false
+}
+
+### Get all todos
+//TODO Missing test to fail on status not being updated
+GET http://localhost:8080/api/todos/1

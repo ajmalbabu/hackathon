@@ -36,11 +36,11 @@ class TodoServiceTest {
         Integer todoId = 1;
         Todo existingTodo = new Todo(todoId, "Existing Todo", "Old description", LocalDate.now(), Todo.Status.CREATED);
         Todo updatedTodo = new Todo(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
-         TodoEntity existingTodoEntity = new TodoEntity(todoId, "Existing Todo", "Old description", LocalDate.now(), Todo.Status.CREATED);
-          TodoEntity updatedTodoEntity = new TodoEntity(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
+        TodoEntity existingTodoEntity = new TodoEntity(todoId, "Existing Todo", "Old description", LocalDate.now(), Todo.Status.CREATED);
+        TodoEntity updatedTodoEntity = new TodoEntity(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
 
         when(todoRepository.findById(todoId)).thenReturn(Optional.of(existingTodoEntity));
-        when(todoRepository.save(any(TodoEntity.class))).thenReturn(Optional.of(updatedTodoEntity));
+        when(todoRepository.save(any(TodoEntity.class))).thenReturn(updatedTodoEntity);
 
         // When
         Optional<Todo> result = todoService.updateTodo(todoId, updatedTodo);
@@ -61,7 +61,7 @@ class TodoServiceTest {
         Integer todoId = 1;
         Todo updatedTodo = new Todo(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
         when(todoRepository.findById(todoId)).thenReturn(Optional.empty());
-        
+
         // When
         Optional<Todo> result = todoService.updateTodo(todoId, updatedTodo);
 

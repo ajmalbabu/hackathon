@@ -45,9 +45,9 @@ class TodoApiTest {
 
         // Given
         TodoEntity existingTodoEntity = new TodoEntity(1, "Existing Todo", "Existing description", LocalDate.now(), Todo.Status.CREATED);
-        Optional<TodoEntity> updatedTodoEntity = Optional.of(new TodoEntity(1, "Updated Todo", "Updated description", LocalDate.now(), Todo.Status.UPDATED));
+        TodoEntity updatedTodoEntity = new TodoEntity(1, "Updated Todo", "Updated description", LocalDate.now(), Todo.Status.UPDATED);
 
-        when(todoRepository.findById(Integer.valueOf(1))).thenReturn(Optional.of(existingTodoEntity));
+        when(todoRepository.findById(1)).thenReturn(Optional.of(existingTodoEntity));
         when(todoRepository.save(any(TodoEntity.class))).thenReturn(updatedTodoEntity);
 
         // When
