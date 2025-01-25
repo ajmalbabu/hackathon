@@ -1,8 +1,8 @@
 package hackathon.service;
 
-import hackathon.entity.TodoEntity;
 import hackathon.model.Todo;
-import hackathon.repository.TodoRepository;
+import hackathon.repository.TodoEntity;
+import hackathon.repository.jpa.TodoJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 class TodoServiceTest {
 
     @Mock
-    private TodoRepository todoRepository;
+    private TodoJpaRepository todoRepository;
 
     @InjectMocks
     private TodoService todoService;
@@ -29,7 +29,7 @@ class TodoServiceTest {
     @Test
     void updateExistingTodoReturnsUpdatedTodo() {
         // Given
-        Integer todoId = 1;
+        String todoId = "1";
         TodoEntity existingTodoEntity = new TodoEntity(todoId, "Existing Todo", "Old description", LocalDate.now(), Todo.Status.CREATED);
         TodoEntity updatedTodoEntity = new TodoEntity(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
         Todo updatedTodo = new Todo(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
@@ -53,7 +53,7 @@ class TodoServiceTest {
     void updateTodoOnNotExistingTodoReturnsOptionalEmpty() {
 
         // Given
-        Integer todoId = 1;
+        String todoId = "1";
         Todo updatedTodo = new Todo(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
         when(todoRepository.findById(todoId)).thenReturn(Optional.empty());
 

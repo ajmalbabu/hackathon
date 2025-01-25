@@ -1,15 +1,14 @@
 package hackathon.service;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
+import hackathon.model.Todo;
+import hackathon.repository.TodoEntity;
+import hackathon.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import hackathon.entity.TodoEntity;
-import hackathon.model.Todo;
-import hackathon.repository.TodoRepository;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TodoService {
@@ -21,8 +20,13 @@ public class TodoService {
         return todoRepository.findAll().stream().map(TodoEntity::toRecord).toList();
     }
 
-    public Optional<Todo> findTodoById(Integer id) {
+    public Optional<Todo> findTodoById(String id) {
         return todoRepository.findById(id).map(TodoEntity::toRecord);
+    }
+
+    public List<Todo> findTodoByText(String text) {
+        List<TodoEntity> todos = todoRepository.findByText(text);
+        return todos.stream().map(TodoEntity::toRecord).toList();
     }
 
     public Todo createTodo(Todo todo) {
@@ -31,18 +35,23 @@ public class TodoService {
                 .toRecord();
     }
 
-    public Optional<Todo> updateTodo(Integer id, Todo todo) {
+    public Optional<Todo> updateTodo(String id, Todo todo) {
         return todoRepository.findById(id)
                 .map(existingEntity -> {
-                    existingEntity.setName(todo.name());
-                    existingEntity.setDescription(todo.description());
-                    existingEntity.setStatus(todo.status());
+                    if (todo.name() != null)
+                        existingEntity.setName(todo.name());
+                    if (todo.description() != null)
+                        existingEntity.setDescription(todo.description());
+                    if (todo.status() != null)
+                        existingEntity.setStatus(todo.status());
+                    if (todo.dateCreated() != null)
+                        existingEntity.setDateCreated(todo.dateCreated());
                     TodoEntity updatedEntity = todoRepository.save(existingEntity);
                     return updatedEntity.toRecord();
                 });
     }
 
-    public boolean deleteTodo(Integer id) {
+    public boolean deleteTodo(String id) {
 
         Optional<Todo> todo = todoRepository.findById(id).map(TodoEntity::toRecord);
         if (todo.isPresent()) {

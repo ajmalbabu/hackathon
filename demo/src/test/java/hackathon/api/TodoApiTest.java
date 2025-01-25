@@ -1,8 +1,8 @@
 package hackathon.api;
 
-import hackathon.entity.TodoEntity;
+import hackathon.repository.TodoEntity;
 import hackathon.model.Todo;
-import hackathon.repository.TodoRepository;
+import hackathon.repository.jpa.TodoJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,16 +32,16 @@ class TodoApiTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private TodoRepository todoRepository;
+    private TodoJpaRepository todoRepository;
 
     @Test
     void updateTodo() throws Exception {
 
         // Given
-        TodoEntity existingTodoEntity = new TodoEntity(1, "Existing Todo", "Existing description", LocalDate.now(), Todo.Status.CREATED);
-        TodoEntity updatedTodoEntity = new TodoEntity(1, "Updated Todo", "Updated description", LocalDate.now(), Todo.Status.UPDATED);
+        TodoEntity existingTodoEntity = new TodoEntity("1", "Existing Todo", "Existing description", LocalDate.now(), Todo.Status.CREATED);
+        TodoEntity updatedTodoEntity = new TodoEntity("1", "Updated Todo", "Updated description", LocalDate.now(), Todo.Status.UPDATED);
 
-        when(todoRepository.findById(1)).thenReturn(Optional.of(existingTodoEntity));
+        when(todoRepository.findById("1")).thenReturn(Optional.of(existingTodoEntity));
         when(todoRepository.save(any(TodoEntity.class))).thenReturn(updatedTodoEntity);
 
         // When

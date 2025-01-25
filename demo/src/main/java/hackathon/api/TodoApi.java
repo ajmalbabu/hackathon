@@ -25,10 +25,16 @@ public class TodoApi {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Todo> getTodoById(@PathVariable Integer id) {
+    public ResponseEntity<Todo> getTodoById(@PathVariable String id) {
         System.out.println("Getting todo by id: " + id);
         Optional<Todo> todo = todoService.findTodoById(id);
         return todo.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/search")
+    public List<Todo> findTodosByText(@RequestBody String text) {
+        System.out.println("Finding todos by text: " + text);
+        return todoService.findTodoByText(text);
     }
 
     @PostMapping
@@ -36,9 +42,9 @@ public class TodoApi {
         return todoService.createTodo(todo);
     }
 
+    
     @PutMapping("/{id}")
-    public ResponseEntity<Todo> updateTodo(@PathVariable Integer id, @RequestBody Todo todo) {
-
+    public ResponseEntity<Todo> updateTodo(@PathVariable String id, @RequestBody Todo todo) {
         Optional<Todo> updatedTodo = todoService.updateTodo(id, todo);
 
         return updatedTodo.map(ResponseEntity::ok)
@@ -47,7 +53,7 @@ public class TodoApi {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteTodo(@PathVariable String id) {
 
         boolean response = todoService.deleteTodo(id);
         if (response) {
@@ -56,4 +62,5 @@ public class TodoApi {
             return ResponseEntity.noContent().build();
         }
     }
+
 }

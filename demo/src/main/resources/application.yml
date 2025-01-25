@@ -9,6 +9,10 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  elasticsearch:
+    uris: http://localhost:9200 # URL of Elasticsearch instance(s)
+#      username: elastic  # optional, if security is enabled
+#      password: changeme # optional, if security is enabled
 
 ---
 
