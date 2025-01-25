@@ -29,7 +29,6 @@ DELETE http://localhost:9200/todo
 #%}
 
 ### Add Todo 1
-# @name todo1
 POST http://localhost:8080/api/todos
 Content-Type: application/json
 
@@ -38,6 +37,7 @@ Content-Type: application/json
   "description": "Milk, Eggs",
   "completed": false
 }
+
 
 > {%
     client.global.set("todo1Id", response.body.id);
