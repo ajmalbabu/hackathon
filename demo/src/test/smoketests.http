@@ -7,26 +7,6 @@ DELETE http://localhost:9200/todo
     });
 %}
 
-#### Create the todo index again
-#PUT http://localhost:9200/todo
-#Content-Type: application/json
-#
-#{
-#  "mappings": {
-#    "properties": {
-#      "name": { "type": "text" },
-#      "description": { "type": "text" },
-#      "status": { "type": "keyword" },
-#      "dateCreated": { "type": "date" }
-#    }
-#  }
-#}
-#
-#> {%
-#    client.test("Recreate index", function(response) {
-#        return response.status === 200;
-#    });
-#%}
 
 ### Add Todo 1
 POST http://localhost:8080/api/todos

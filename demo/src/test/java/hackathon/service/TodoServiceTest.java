@@ -38,7 +38,7 @@ class TodoServiceTest {
         when(todoRepository.save(any(TodoJpaEntity.class))).thenReturn(updatedTodoJpaEntity);
 
         // When
-        Optional<Todo> result = todoService.updateTodo(todoId, updatedTodo);
+        Optional<Todo> result = todoService.updateTodo(updatedTodo);
 
         // Assert
         assertTrue(result.isPresent());
@@ -58,7 +58,7 @@ class TodoServiceTest {
         when(todoRepository.findById(todoId)).thenReturn(Optional.empty());
 
         // When
-        Optional<Todo> result = todoService.updateTodo(todoId, updatedTodo);
+        Optional<Todo> result = todoService.updateTodo(updatedTodo);
 
         // Then
         assertTrue(result.isEmpty());

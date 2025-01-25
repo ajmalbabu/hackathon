@@ -4,7 +4,6 @@ import hackathon.model.Todo;
 import hackathon.model.Todo.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -17,9 +16,9 @@ import java.util.UUID;
 @Table(name = "todo")
 @Getter
 @Setter
-@NoArgsConstructor
 public class TodoJpaEntity {
 
+    public TodoJpaEntity(){}
     public TodoJpaEntity(String id, String name, String description, LocalDate dateCreated, Status status) {
         this.id = id;
         this.name = name;
