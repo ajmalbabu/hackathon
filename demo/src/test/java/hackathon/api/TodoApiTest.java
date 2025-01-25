@@ -1,6 +1,6 @@
 package hackathon.api;
 
-import hackathon.repository.TodoEntity;
+import hackathon.repository.jpa.TodoJpaEntity;
 import hackathon.model.Todo;
 import hackathon.repository.jpa.TodoJpaRepository;
 import org.junit.jupiter.api.Test;
@@ -38,11 +38,11 @@ class TodoApiTest {
     void updateTodo() throws Exception {
 
         // Given
-        TodoEntity existingTodoEntity = new TodoEntity("1", "Existing Todo", "Existing description", LocalDate.now(), Todo.Status.CREATED);
-        TodoEntity updatedTodoEntity = new TodoEntity("1", "Updated Todo", "Updated description", LocalDate.now(), Todo.Status.UPDATED);
+        TodoJpaEntity existingTodoJpaEntity = new TodoJpaEntity("1", "Existing Todo", "Existing description", LocalDate.now(), Todo.Status.CREATED);
+        TodoJpaEntity updatedTodoJpaEntity = new TodoJpaEntity("1", "Updated Todo", "Updated description", LocalDate.now(), Todo.Status.UPDATED);
 
-        when(todoRepository.findById("1")).thenReturn(Optional.of(existingTodoEntity));
-        when(todoRepository.save(any(TodoEntity.class))).thenReturn(updatedTodoEntity);
+        when(todoRepository.findById("1")).thenReturn(Optional.of(existingTodoJpaEntity));
+        when(todoRepository.save(any(TodoJpaEntity.class))).thenReturn(updatedTodoJpaEntity);
 
         // When
         ResultActions result =mockMvc.perform(put("/api/todos/1")

@@ -1,4 +1,4 @@
-package hackathon.repository;
+package hackathon.repository.jpa;
 
 import hackathon.model.Todo;
 import hackathon.model.Todo.Status;
@@ -18,9 +18,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TodoEntity {
+public class TodoJpaEntity {
 
-    public TodoEntity(String id, String name, String description,LocalDate dateCreated, Status status) {
+    public TodoJpaEntity(String id, String name, String description, LocalDate dateCreated, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,17 +30,7 @@ public class TodoEntity {
 
     @Id
     private String id;
-
-    @PrePersist
-    public void onPrePersist() {
-        // Automatically set a UUID if ID is null
-        if (this.id == null) {
-            this.id = UUID.randomUUID().toString();
-        }
-    }
-
     private String name;
-
     private String description;
 
     @Field(type = FieldType.Date, format = DateFormat.date_time)
@@ -52,4 +42,17 @@ public class TodoEntity {
     public Todo toRecord() {
         return new Todo(id, name, description, dateCreated, status);
     }
+
+    public static TodoJpaEntity fromModel(Todo todo) {
+        return new TodoJpaEntity(todo.id(), todo.name(), todo.description(), todo.dateCreated(), todo.status());
+    }
+
+    @PrePersist
+    public void onPrePersist() {
+        // Automatically set a UUID if ID is null
+        if (this.id == null) {
+            this.id = UUID.randomUUID().toString();
+        }
+    }
+
 }

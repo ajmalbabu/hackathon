@@ -1,4 +1,4 @@
-# DELETE the todo index
+### DELETE the todo index
 DELETE http://localhost:9200/todo
 
 > {%
@@ -29,6 +29,7 @@ DELETE http://localhost:9200/todo
 #%}
 
 ### Add Todo 1
+# @name todo1
 POST http://localhost:8080/api/todos
 Content-Type: application/json
 
@@ -96,7 +97,7 @@ DELETE http://localhost:8080/api/todos/{{todo4Id}}
 
 > {%
     client.test('http status is correct', () => {
-        client.assert(response.status === 200, "wrong status");
+        client.assert(response.status === 200, "status should be 200 but was ${response.status}");
     });
 %}
 
@@ -132,7 +133,7 @@ Content-Type: application/json
         client.assert(response.status === 200, "wrong status");
     });
     client.test("Response is an array with 2 elements", () => {
-        return Array.isArray(response.body) && response.body.length === 2;
+        client.assert(Array.isArray(response.body) && response.body.length == 2);
      // TODO FIXME this is a bug in TodoService.update: it does not remove the old todo hence the 2 todos
     });
 %}

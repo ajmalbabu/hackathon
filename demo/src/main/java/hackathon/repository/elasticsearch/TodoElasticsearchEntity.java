@@ -1,7 +1,6 @@
 package hackathon.repository.elasticsearch;
 
 import hackathon.model.Todo;
-import hackathon.repository.TodoEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +15,7 @@ import java.time.LocalDate;
 @Setter
 @Document(indexName = "todo")
 @AllArgsConstructor
-public class ElasticSearchTodoDTO {
+public class TodoElasticsearchEntity {
     private String id;
     private String name;
     private String description;
@@ -24,10 +23,10 @@ public class ElasticSearchTodoDTO {
     private LocalDate dateCreated;
     private String status;
 
-    public TodoEntity toEntity() {
-        return new TodoEntity(id, name, description, dateCreated, status==null?null:Todo.Status.valueOf(status));
+    public Todo toModel() {
+        return new Todo(id, name, description, dateCreated, status==null?null:Todo.Status.valueOf(status));
     }
-    public static ElasticSearchTodoDTO fromTodo(Todo todo) {
-        return new ElasticSearchTodoDTO(todo.id(), todo.name(), todo.description(), todo.dateCreated(), todo.status().name());
+    public static TodoElasticsearchEntity fromModel(Todo todo) {
+        return new TodoElasticsearchEntity(todo.id(), todo.name(), todo.description(), todo.dateCreated(), todo.status().name());
     }
 }

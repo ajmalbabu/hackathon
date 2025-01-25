@@ -45,7 +45,8 @@ public class TodoApi {
     
     @PutMapping("/{id}")
     public ResponseEntity<Todo> updateTodo(@PathVariable String id, @RequestBody Todo todo) {
-        Optional<Todo> updatedTodo = todoService.updateTodo(id, todo);
+        Todo todoToUpdate = new Todo(id, todo.name(), todo.description(), todo.dateCreated(), todo.status());
+        Optional<Todo> updatedTodo = todoService.updateTodo(todoToUpdate);
 
         return updatedTodo.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

@@ -1,61 +1,70 @@
 package hackathon.service;
 
 import hackathon.model.Todo;
-import hackathon.repository.TodoEntity;
-import hackathon.repository.TodoRepository;
+import hackathon.repository.jpa.TodoJpaEntity;
+import hackathon.repository.elasticsearch.TodoElasticsearchEntity;
+import hackathon.repository.elasticsearch.TodoElasticsearchRepository;
+import hackathon.repository.jpa.TodoJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class TodoService {
 
+
     @Autowired
-    private TodoRepository todoRepository;
+    private TodoElasticsearchRepository todoElasticsearchRepository;
+    @Autowired
+    private TodoJpaRepository todoJpaRepository;
+
 
     public List<Todo> getAllTodos() {
-        return todoRepository.findAll().stream().map(TodoEntity::toRecord).toList();
+        return todoJpaRepository.findAll().stream().map(TodoJpaEntity::toRecord).toList();
     }
 
     public Optional<Todo> findTodoById(String id) {
-        return todoRepository.findById(id).map(TodoEntity::toRecord);
+        return todoJpaRepository.findById(id).map(TodoJpaEntity::toRecord);
     }
 
     public List<Todo> findTodoByText(String text) {
-        List<TodoEntity> todos = todoRepository.findByText(text);
-        return todos.stream().map(TodoEntity::toRecord).toList();
+        var searchHits = todoElasticsearchRepository.searchByText(text);
+        return searchHits.getSearchHits().stream()
+                .map(SearchHit::getContent)
+                .map(TodoElasticsearchEntity::toModel) // Get actual document
+                .collect(Collectors.toList());
+
     }
 
     public Todo createTodo(Todo todo) {
-        return todoRepository
-                .save(new TodoEntity(null, todo.name(), todo.description(), LocalDate.now(), Todo.Status.CREATED))
-                .toRecord();
+        TodoJpaEntity todoJpaEntity = new TodoJpaEntity(null, todo.name(), todo.description(), LocalDate.now(), Todo.Status.CREATED);
+        // TODO implement atomicity so both repos are in sync
+        todoElasticsearchRepository.save(TodoElasticsearchEntity.fromModel(todoJpaEntity.toRecord()));
+        return todoJpaRepository.save(todoJpaEntity).toRecord();
     }
 
-    public Optional<Todo> updateTodo(String id, Todo todo) {
-        return todoRepository.findById(id)
-                .map(existingEntity -> {
-                    if (todo.name() != null)
-                        existingEntity.setName(todo.name());
-                    if (todo.description() != null)
-                        existingEntity.setDescription(todo.description());
-                    if (todo.status() != null)
-                        existingEntity.setStatus(todo.status());
-                    if (todo.dateCreated() != null)
-                        existingEntity.setDateCreated(todo.dateCreated());
-                    TodoEntity updatedEntity = todoRepository.save(existingEntity);
-                    return updatedEntity.toRecord();
-                });
+    public Optional<Todo> updateTodo(Todo todo) {
+        if (todoJpaRepository.findById(todo.id()).isEmpty()) {
+            return Optional.empty();
+        }
+        // TODO implement atomicity so both repos are in sync
+        todoElasticsearchRepository.save(TodoElasticsearchEntity.fromModel(todo));
+        TodoJpaEntity updatedEntity = todoJpaRepository.save(TodoJpaEntity.fromModel(todo));
+        return Optional.ofNullable(updatedEntity.toRecord());
     }
 
     public boolean deleteTodo(String id) {
 
-        Optional<Todo> todo = todoRepository.findById(id).map(TodoEntity::toRecord);
+        Optional<Todo> todo = todoJpaRepository.findById(id).map(TodoJpaEntity::toRecord);
         if (todo.isPresent()) {
-            todoRepository.deleteById(id);
+            // TODO implement atomicity so both repos are in sync
+            todoElasticsearchRepository.deleteById(id);
+            todoJpaRepository.deleteById(id);
             return true;
         }
         return false;

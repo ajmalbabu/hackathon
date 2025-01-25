@@ -1,7 +1,7 @@
 package hackathon.service;
 
 import hackathon.model.Todo;
-import hackathon.repository.TodoEntity;
+import hackathon.repository.jpa.TodoJpaEntity;
 import hackathon.repository.jpa.TodoJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,12 +30,12 @@ class TodoServiceTest {
     void updateExistingTodoReturnsUpdatedTodo() {
         // Given
         String todoId = "1";
-        TodoEntity existingTodoEntity = new TodoEntity(todoId, "Existing Todo", "Old description", LocalDate.now(), Todo.Status.CREATED);
-        TodoEntity updatedTodoEntity = new TodoEntity(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
+        TodoJpaEntity existingTodoJpaEntity = new TodoJpaEntity(todoId, "Existing Todo", "Old description", LocalDate.now(), Todo.Status.CREATED);
+        TodoJpaEntity updatedTodoJpaEntity = new TodoJpaEntity(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
         Todo updatedTodo = new Todo(todoId, "Updated Todo", "New description", LocalDate.now(), Todo.Status.UPDATED);
 
-        when(todoRepository.findById(todoId)).thenReturn(Optional.of(existingTodoEntity));
-        when(todoRepository.save(any(TodoEntity.class))).thenReturn(updatedTodoEntity);
+        when(todoRepository.findById(todoId)).thenReturn(Optional.of(existingTodoJpaEntity));
+        when(todoRepository.save(any(TodoJpaEntity.class))).thenReturn(updatedTodoJpaEntity);
 
         // When
         Optional<Todo> result = todoService.updateTodo(todoId, updatedTodo);
