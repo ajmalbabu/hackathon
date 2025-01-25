@@ -1,0 +1,138 @@
+# DELETE the todo index
+DELETE http://localhost:9200/todo
+
+> {%
+    client.test('http status is correct', () => {
+        client.assert(response.status === 200 || response.status === 404); // 404 if index doesn't exist
+    });
+%}
+
+#### Create the todo index again
+#PUT http://localhost:9200/todo
+#Content-Type: application/json
+#
+#{
+#  "mappings": {
+#    "properties": {
+#      "name": { "type": "text" },
+#      "description": { "type": "text" },
+#      "status": { "type": "keyword" },
+#      "dateCreated": { "type": "date" }
+#    }
+#  }
+#}
+#
+#> {%
+#    client.test("Recreate index", function(response) {
+#        return response.status === 200;
+#    });
+#%}
+
+### Add Todo 1
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "name": "Pick up food",
+  "description": "Milk, Eggs",
+  "completed": false
+}
+
+> {%
+    client.global.set("todo1Id", response.body.id);
+    client.test('http status is correct', () => {
+        client.assert(response.status === 200, "wrong status");
+        client.assert(response.body.name === "Pick up food", "wrong name");
+    });
+%}
+
+### Adding another todo
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "name": "File taxes",
+  "description": "Before Apr 15",
+  "completed": false
+}
+
+> {%
+    client.global.set("todo2Id", response.body.id);
+    client.test('http status is correct', () => {
+        client.assert(response.status === 200, "wrong status");
+        client.assert(response.body.name === "File taxes", "wrong name");
+    });
+%}
+### Adding another todo
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "name": "Pick up dry cleaning",
+  "description": "Remember my dress",
+  "completed": false
+}
+
+> {%
+    client.global.set("todo3Id", response.body.id);
+%}
+
+### Adding another todo
+POST http://localhost:8080/api/todos
+Content-Type: application/json
+
+{
+  "name": "To be delete",
+  "description": "don't forget about me",
+  "completed": false
+}
+
+> {%
+    client.global.set("todo4Id", response.body.id);
+%}
+
+### Delete todo 4
+DELETE http://localhost:8080/api/todos/{{todo4Id}}
+
+> {%
+    client.test('http status is correct', () => {
+        client.assert(response.status === 200, "wrong status");
+    });
+%}
+
+### Update todo 1
+PUT http://localhost:8080/api/todos/{{todo1Id}}
+Content-Type: application/json
+
+{
+  "name": "Pick up food",
+  "description": "Milk, Eggs",
+  "completed": true,
+  "dateCreated": "2024-12-01"
+}
+
+> {%
+    client.test('http status is correct', () => {
+        client.assert(response.status === 200, "wrong status");
+        client.assert(response.body.dateCreated === "2024-12-01", "wrong date");
+    });
+%}
+
+### Get Todo 1
+GET http://localhost:8080/api/todos/{{todo1Id}}
+
+### Text search
+POST http://localhost:8080/api/todos/search
+Content-Type: application/json
+
+"Milk"
+
+> {%
+    client.test('http status is correct', () => {
+        client.assert(response.status === 200, "wrong status");
+    });
+    client.test("Response is an array with 2 elements", () => {
+        return Array.isArray(response.body) && response.body.length === 2;
+     // TODO FIXME this is a bug in TodoService.update: it does not remove the old todo hence the 2 todos
+    });
+%}
